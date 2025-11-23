@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile | Event Booking Platform</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-5">
+
+    <div th:if="${isAdmin}" class="d-flex justify-content-end mb-3">
+        <a th:href="@{/admin/analytics/dashboard}" class="btn btn-primary">
+            Admin Dashboard
+        </a>
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        <div class="profile-card card text-center shadow-sm p-4" style="width: 22rem;">
+            <h2 th:text="${user.username}">Username</h2>
+            <p class="text-muted mb-3" th:text="${user.email}">user@example.com</p>
+
+            <p><strong>Name:</strong> <span
+                    th:text="${user.name != null && user.name != '' ? user.name : 'Not set'}"></span></p>
+            <p><strong>Age:</strong> <span
+                    th:text="${user.age != null && user.age != '' ? user.age : 'Not set'}"></span></p>
+            <p><strong>Joined:</strong> <span th:text="${#temporals.format(user.getCreatedAt(), 'dd MMM yyyy')}">01 Jan 2025</span>
+            </p>
+            <p><strong>Role:</strong> <span th:text="${user.role}">USER</span></p>
+
+            <div class="mt-3">
+                <a th:href="@{/user/profile/edit}" class="btn btn-primary me-2">Edit Profile</a>
+                <a th:href="@{/logout}" class="btn btn-outline-secondary">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" id="profileAccordion">
+
+        <div th:if="${isAdmin}" class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingAllUsers">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseAllUsers" aria-expanded="false" aria-controls="collapseAllUsers">
+                    All Users
+                </button>
+            </h2>
+            <div id="collapseAllUsers" class="accordion-collapse collapse"
+                 aria-labelledby="headingAllUsers" data-bs-parent="#profileAccordion">
+                <div class="accordion-body">
+                    <div th:if="${allUsers != null and #lists.isEmpty(allUsers) == false}" class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="u : ${allUsers}">
+                                <td th:text="${u.username}">username</td>
+                                <td th:text="${u.email}">user@example.com</td>
+                                <td th:text="${u.role}">USER</td>
+                                <td>
+                                <span th:text="${u.active ? 'Active' : 'Blocked'}"
+                                      th:classappend="${u.active ? ' text-success' : ' text-danger'}"></span>
+
+                                <td>
+                                    <form th:action="@{/user/block/{userId}(userId=${u.id})}" method="post">
+                                        <button type="submit"
+                                                th:text="${u.active ? 'Block' : 'Unblock'}"
+                                                class="btn btn-sm"
+                                                th:classappend="${u.active ? ' btn-danger' : ' btn-success'}">
+                                        </button>
+
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p th:if="${allUsers == null || #lists.isEmpty(allUsers)}" class="text-muted">
+                        No users found.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="headingCreatedEvents">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseCreatedEvents" aria-expanded="false"
+                        aria-controls="collapseCreatedEvents">
+                    Your Created Events
+                </button>
+            </h2>
+            <div id="collapseCreatedEvents" class="accordion-collapse collapse"
+                 aria-labelledby="headingCreatedEvents" data-bs-parent="#profileAccordion">
+                <div class="accordion-body">
+                    <div th:if="${createdEvents != null and #lists.isEmpty(createdEvents) == false}"
+                         class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col" th:each="event : ${createdEvents}">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${event.name}">Event Name</h5>
+                                    <p><strong>Start Date:</strong> <span
+                                            th:text="${#temporals.format(event.startDate, 'dd MMM yyyy')}">01 Jan 2025</span>
+                                    </p>
+                                    <p><strong>End Date:</strong> <span
+                                            th:text="${#temporals.format(event.endDate, 'dd MMM yyyy')}">01 Jan 2025</span>
+                                    </p>
+                                    <p><strong>Total Seats:</strong> <span th:text="${event.totalSeats}">50</span></p>
+                                    <p><strong>Available Seats:</strong> <span
+                                            th:text="${event.availableSeats}">50</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p th:if="${createdEvents == null || #lists.isEmpty(createdEvents)}" class="text-muted">You have not
+                        created any events yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingBookings">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseBookings" aria-expanded="false" aria-controls="collapseBookings">
+                    Your Bookings
+                </button>
+            </h2>
+            <div id="collapseBookings" class="accordion-collapse collapse" aria-labelledby="headingBookings"
+                 data-bs-parent="#profileAccordion">
+                <div class="accordion-body">
+                    <div th:if="${bookings != null and #lists.isEmpty(bookings) == false}"
+                         class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col" th:each="booking : ${bookings}">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${booking.event.name}">Event Name</h5>
+                                    <p><strong>Start Date:</strong> <span
+                                            th:text="${#temporals.format(booking.event.startDate, 'dd MMM yyyy')}">01 Jan 2025</span>
+                                    </p>
+                                    <p><strong>End Date:</strong> <span
+                                            th:text="${#temporals.format(booking.event.endDate, 'dd MMM yyyy')}">01 Jan 2025</span>
+                                    </p>
+                                    <p class="card-text"><strong>Booking Made:</strong> <span
+                                            th:text="${#temporals.format(booking.getBookedOn(), 'dd MMM yyyy HH:mm')}">05 Nov 2025 14:30</span>
+                                    </p>
+
+                                    <p><strong>Seats Booked:</strong> <span th:text="${booking.seatsBooked}">2</span>
+                                    </p>
+                                    <p><strong>Status:</strong>
+                                        <span th:text="${booking.status.displayName}"
+                                              th:classappend="${booking.status.name() == 'CONFIRMED' ? ' text-success' : (booking.status.name() == 'CANCELLED' ? ' text-danger' : ' text-warning')}">
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p th:if="${bookings == null || #lists.isEmpty(bookings)}" class="text-muted">You have not booked
+                        any events yet.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer class="footer text-center mt-5 mb-3 text-muted">
+    &copy; 2025 EventBookingPlatform
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
