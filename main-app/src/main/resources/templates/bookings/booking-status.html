@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/booking-status.css}">
+</head>
+<body>
+
+<div class="status-wrapper d-flex justify-content-center align-items-center">
+    <div class="status-card">
+        <h2 class="card-title text-center" th:text="${message}">Booking Status</h2>
+        <div th:if="${booking != null}" class="booking-info mt-3">
+            <p><strong>Event:</strong> <span th:text="${booking.event.name}"></span></p>
+            <p><strong>Seats Booked:</strong> <span th:text="${booking.seatsBooked}"></span></p>
+            <p><strong>Status:</strong> <span th:text="${booking.status.displayName}"></span></p>
+        </div>
+        <a th:href="${googleCalendarLink}" target="_blank">
+            Add to Google Calendar
+        </a>
+        <div th:if="${pdfFileName}">
+            <a th:href="@{/bookings/download/{fileName}(fileName=${pdfFileName})}" target="_blank">
+                Download your booking PDF
+            </a>
+        </div>
+
+        <a th:href="@{/events}" class="btn btn-home mt-4">Back to Events</a>
+    </div>
+</div>
+
+</body>
+</html>
