@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Add Event</title>
+    <link rel="stylesheet" th:href="@{/css/add-event.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+    <div class="w-100 mb-3">
+        <a th:href="@{/events}" class="btn btn-outline-secondary back-button">&larr; Back</a>
+    </div>
+
+    <div class="form-wrapper">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show custom-alert"
+             role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- add for error -->
+
+        <h2>Add New Event</h2>
+
+        <form th:action="@{/events/add-event}" th:object="${event}" method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Event Name</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea th:field="*{description}" id="description" class="form-control"></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                <button type="button" id="generateBtn" class="btn btn-info mt-2">Generate Description</button>
+            </div>
+
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="datetime-local" id="startDate" th:field="*{startDate}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="datetime-local" id="endDate" th:field="*{endDate}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="venue" class="form-label">Venue</label>
+                <input type="text" id="venue" th:field="*{venue}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('venue')}" th:errors="*{venue}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" id="location" th:field="*{location}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price (lv)</label>
+                <input type="number" id="price" th:field="*{price}" class="form-control" step="0.01" min="0">
+                <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="totalSeats" class="form-label">Total Seats</label>
+                <input type="number" id="totalSeats" th:field="*{totalSeats}" class="form-control" min="1">
+                <div class="text-danger" th:if="${#fields.hasErrors('totalSeats')}" th:errors="*{totalSeats}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Add Event</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    const titleInput = document.getElementById("name");
+    const descTextarea = document.getElementById("description");
+    const generateBtn = document.getElementById("generateBtn");
+
+    generateBtn.addEventListener("click", () => {
+        const title = titleInput.value.trim();
+        if (!title) {
+            alert("Please enter the event title first!");
+            return;
+        }
+
+        fetch(`/ai/description?title=${encodeURIComponent(title)}`)
+            .then(res => res.json())
+            .then(data => descTextarea.value = data.description)
+            .catch(err => alert("Failed to generate description. Try again."));
+    });
+</script>
+</html>
