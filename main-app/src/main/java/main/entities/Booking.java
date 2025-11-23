@@ -45,4 +45,7 @@ public class Booking implements Serializable {
 
     @Column(nullable = false)
     private double totalPrice;
+
+    @Lob
+    private String qrCodeBase64;
 }
