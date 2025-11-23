@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Booking Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <section class="text-center py-5 bg-light" th:if="${#authorization.expression('!isAuthenticated()')}">
+        <h1 class="display-4 fw-bold">Welcome to Event Booking!</h1>
+        <p class="lead">Find, create, and book amazing events around you.</p>
+
+        <a th:href="@{/login}" class="btn btn-outline-primary px-4 me-2">Login</a>
+        <a th:href="@{/register}" class="btn btn-primary px-4">Sign Up</a>
+    </section>
+
+    <div th:if="${#authorization.expression('!isAuthenticated()')}">
+        <section class="container my-5 text-center">
+            <h2 class="mb-4">Browse Events</h2>
+            <p>See what's happening soon — no login needed.</p>
+            <a th:href="@{/events}" class="btn btn-success">View Events</a>
+            <section class="categories py-5 text-center">
+                <div class="d-flex flex-wrap justify-content-center gap-5">
+                    <div><i class="bi bi-music-note-beamed fs-1"></i>
+                        <p>Music</p></div>
+                    <div><i class="bi bi-palette fs-1"></i>
+                        <p>Art</p></div>
+                    <div><i class="bi bi-laptop fs-1"></i>
+                        <p>Tech</p></div>
+                    <div><i class="bi bi-bicycle fs-1"></i>
+                        <p>Sports</p></div>
+                    <div><i class="bi bi-cup-straw fs-1"></i>
+                        <p>Food</p></div>
+                    <div><i class="bi bi-people fs-1"></i>
+                        <p>Social</p></div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <section class="text-center logged-in-section bg-light" th:if="${#authorization.expression('isAuthenticated()')}">
+        <h1 class="display-4 fw-bold">Welcome to Event Booking!</h1>
+        <p class="lead">Glad to see you again! Explore or create your next event below.</p>
+
+        <div class="mt-4">
+            <a th:href="@{/home}" class="btn btn-primary px-4 me-2">Go to Home</a>
+            <a th:href="@{/events}" class="btn btn-outline-primary px-4">Browse Events</a>
+        </div>
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-4">
+    &copy; 2025 EventBookingPlatform
+</footer>
+
+</body>
+</html>
