@@ -27,8 +27,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
-    private final BookingRepository bookingRepository;
 
     public Event findById(UUID id) {
         return eventRepository.findById(id)
@@ -48,7 +46,6 @@ public class EventService {
             throw new IllegalArgumentException("Start date must be before end date");
         }
         Event event = Event.builder()
-                //.id(eventDTO.getId())
                 .name(eventDTO.getName())
                 .description(eventDTO.getDescription())
                 .startDate(eventDTO.getStartDate())
@@ -134,37 +131,16 @@ public class EventService {
     }
 
     @Cacheable("upcomingEvents")
-    public List<Event> getUpcomingEvents() {
+    public void getUpcomingEvents() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime thirtyDaysLater = now.plusDays(30);
-        return eventRepository.findByStartDateBetween(now, thirtyDaysLater);
+        eventRepository.findByStartDateBetween(now, thirtyDaysLater);
     }
 
     @Transactional
     @CacheEvict(value = "upcomingEvents", allEntries = true)
     public void removeExpiredEvents() {
         eventRepository.deleteAllByEndDateBefore(LocalDateTime.now());
-    }
-
-    public List<Event> findEventsByDate(LocalDate date) {
-        LocalDateTime startDay = date.atStartOfDay();
-        LocalDateTime endOfDay = startDay.plusDays(1).minusNanos(1);
-        return eventRepository.findByStartDateBetween(startDay, endOfDay);
-    }
-
-    public List<User> getEventAttendees(Event event) {
-        return bookingRepository.findAllByEvent(event)
-                .stream()
-                .map(Booking::getUser)
-                .toList();
-    }
-
-    public List<User> getUsersNotBooked(Event event) {
-        List<User> allUsers = userRepository.findAll();
-        List<User> bookedUsers = getEventAttendees(event);
-        return allUsers.stream()
-                .filter(user -> !bookedUsers.contains(user))
-                .toList();
     }
 
     public EventAnalyticsDTO mapToAnalytics(Event event) {
@@ -176,7 +152,4 @@ public class EventService {
         );
     }
 
-    public List<Event> findAll() {
-        return eventRepository.findAll();
-    }
 }
