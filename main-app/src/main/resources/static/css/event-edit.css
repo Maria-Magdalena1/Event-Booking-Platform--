@@ -1,0 +1,56 @@
+:root {
+    --main-peach: #ffb07c;
+    --dark-peach: #ff9460;
+    --soft-cream: #fce7dc;
+    --warm-sand: #f6dccb;
+    --form-peach: #ffe6d8;
+    --text-dark: #333333;
+}
+
+body {
+    background: linear-gradient(rgba(255, 176, 124, 0.4), rgba(255, 176, 124, 0.4)),
+    url('https://images.unsplash.com/photo-1464047736614-af63643285bf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974') no-repeat center center;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+.form-container {
+    background: var(--form-peach);
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 600px;
+    margin: 80px auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.form-container h2 {
+    color: var(--main-peach);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e0b78f;
+    border-radius: 8px;
+    background-color: #fff8f0;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+button {
+    background-color: var(--main-peach);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: var(--dark-peach);
+}

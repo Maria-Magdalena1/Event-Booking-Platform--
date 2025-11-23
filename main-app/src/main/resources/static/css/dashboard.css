@@ -1,0 +1,82 @@
+body {
+    background-color: #fff5f0;
+    font-family: 'Arial', sans-serif;
+}
+
+.card {
+    border-radius: 15px;
+    background-color: #ffe6d6;
+    color: #ff5722;
+}
+
+.card h2 {
+    font-weight: 700;
+    color: #ff704d;
+}
+
+.card h5 {
+    font-weight: 500;
+}
+
+.table-peach {
+    background-color: #fff0e6 !important;
+    color: #ff5722;
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-peach thead {
+    background-color: #ff704d !important;
+    color: white;
+}
+
+.badge-high {
+    background-color: #ff6f61;
+    color: white;
+    padding: 0.35em 0.6em;
+    border-radius: 0.35rem;
+    font-weight: bold;
+}
+
+.badge-medium {
+    background-color: #ffb88c;
+    color: white;
+    padding: 0.35em 0.6em;
+    border-radius: 0.35rem;
+    font-weight: bold;
+}
+
+.badge-low {
+    background-color: #ffe5d4;
+    color: black;
+    padding: 0.35em 0.6em;
+    border-radius: 0.35rem;
+    font-weight: bold;
+}
+
+.table-peach thead tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table-peach thead tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.btn-success {
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-success:hover {
+    background-color: #ffe6d6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
