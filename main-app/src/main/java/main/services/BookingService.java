@@ -25,7 +25,7 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final EventService eventService;
-
+    private final QRCodeService qrCodeService;
 
     @Transactional
     public Booking createBooking(User user, Event event, int seats) {
@@ -67,6 +67,14 @@ public class BookingService {
         double totalPrice = event.getPrice() * booking.getSeatsBooked();
         booking.setTotalPrice(totalPrice);
 
+        String qrData ="\nEvent: " + booking.getEvent().getName()
+                + "\nSeats: " + booking.getSeatsBooked()
+                + "\nStart Date: " + booking.getEvent().getStartDate()
+                + "\nEnd Date: " + booking.getEvent().getEndDate();
+
+        String qrBase64 = qrCodeService.generateQRCodeBase64(qrData, 250, 250);
+        booking.setQrCodeBase64(qrBase64);
+
         booking.setStatus(BookingStatus.CONFIRMED);
         bookingRepository.save(booking);
 
@@ -84,7 +92,7 @@ public class BookingService {
 
         booking.setStatus(BookingStatus.CANCELLED);
 
-        bookingRepository.save(booking);
+        save(booking);
         return booking;
     }
 
