@@ -24,6 +24,8 @@
                 Download your booking PDF
             </a>
         </div>
+        <img th:src="'data:image/png;base64,' + ${booking.qrCodeBase64}" alt="QR Code"/>
+        <a th:href="@{'/api/user/bookings/download/' + ${booking.id}}" download="booking.png">Свали QR кода</a>
 
         <a th:href="@{/events}" class="btn btn-home mt-4">Back to Events</a>
     </div>
