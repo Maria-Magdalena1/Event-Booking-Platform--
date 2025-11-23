@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Error'">Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+
+</head>
+<body th:with="code=${code}, title=${title}, message=${message}">
+<div class="card">
+    <div class="error-code" th:text="${code} ?: 'Error'">Error</div>
+    <div class="error-title" th:text="${title} ?: 'Something went wrong'">Error Title</div>
+    <p class="error-message" th:text="${message} ?: 'An unexpected error occurred.'">Error message goes here.</p>
+
+    <a th:if="${code} == '404'" th:href="@{/events}" class="btn btn-outline-primary btn-back">Go Back to Events</a>
+    <a th:if="${code} != '404'" th:href="@{/}" class="btn btn-outline-primary btn-back">Go Home</a>
+</div>
+</body>
+</html>
