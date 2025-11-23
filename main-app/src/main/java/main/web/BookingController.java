@@ -125,16 +125,6 @@ public class BookingController {
                     booking.getEvent().getStartDate(),
                     booking.getEvent().getEndDate()
             );
-            //String startISO = booking.getEvent().getStartDate().toString();
-            //String endISO = booking.getEvent().getEndDate().toString();
-            //bookingReminderService.createBookingReminder(
-            //        booking.getEvent().getName(),
-            //        "Booking for " + booking.getUser().getName(),
-            //        startISO,
-            //        endISO,
-            //        30,
-            //        60
-            //);
 
             BookingAnalyticsDTO bookingDTO = new BookingAnalyticsDTO();
             bookingDTO.setId(booking.getId());
