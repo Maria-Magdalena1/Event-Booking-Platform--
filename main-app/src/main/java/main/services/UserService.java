@@ -22,7 +22,6 @@ import main.web.dto.UserRegistrationDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -133,17 +132,4 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public UserAnalyticsDTO mapToAnalyticsDTO(User user) {
-        UserAnalyticsDTO userDTO = new UserAnalyticsDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-
-        return userDTO;
-    }
-
-    public List<UserAnalyticsDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream().map(this::mapToAnalyticsDTO)
-                .collect(Collectors.toList());
-    }
 }
