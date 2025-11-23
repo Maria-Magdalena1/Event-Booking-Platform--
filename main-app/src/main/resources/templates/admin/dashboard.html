@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+</head>
+<body class="p-4">
+
+<div class="container">
+
+    <h2 class="text-center mb-5">Admin Analytics Dashboard</h2>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>Total Users</h5>
+                <h2 th:text="${totalUsers}">0</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>Total Events</h5>
+                <h2 th:text="${totalEvents}">0</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>Total Bookings</h5>
+                <h2 th:text="${totalBookings}">0</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>Total Revenue</h5>
+                <h2 th:text="${#numbers.formatDecimal(totalRevenue, 2, 2)} + ' лв'">0.00 лв</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-4">Top Events</h4>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Bookings</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${topEvents.isEmpty()}">
+                    <td colspan="2" class="text-center">No top events</td>
+                </tr>
+                <tr th:each="row : ${topEvents}">
+                    <td th:text="${row['name']}">Event Name</td>
+                    <td>
+                        <span th:text="${row['totalSeatsBooked']}"
+                              th:classappend="${row['totalSeatsBooked'] > 15} ? ' badge-high ' : (${row['totalSeatsBooked'] > 7} ? ' badge-medium ' : ' badge-low ')">
+                            0
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-4">Top Users</h4>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Booked Seats</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${topUsers.isEmpty()}">
+                    <td colspan="2" class="text-center">No top users</td>
+                </tr>
+                <tr th:each="row : ${topUsers}">
+                    <td th:text="${row['username']}">Username</td>
+                    <td>
+                        <span th:text="${row['totalBookedSeats']}"
+                              th:classappend="${row['totalBookedSeats'] > 15} ? ' badge-high ' : (${row['totalBookedSeats'] > 7} ? ' badge-medium ' : ' badge-low ')">
+                            0
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-4">Seat Warnings</h4>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Free Seats</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${seatWarnings.isEmpty()}">
+                    <td colspan="2" class="text-center">No events at risk</td>
+                </tr>
+                <tr th:each="row : ${seatWarnings}">
+                    <td th:text="${row['eventName']}">Event Name</td>
+                    <td th:text="${row['freeSeats']}">0</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="#" onclick="history.back();" class="btn btn-success">← Back</a>
+    </div>
+
+</div>
+
+</body>
+</html>
