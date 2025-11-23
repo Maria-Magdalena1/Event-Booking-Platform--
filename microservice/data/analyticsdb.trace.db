@@ -1,0 +1,3 @@
+2025-11-22 20:00:06.300231+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM ANALYTICS_EVENT APP_USER [*]BOOKING"; SQL statement:
+SELECT * FROM ANALYTICS_EVENT APP_USER BOOKING [42000-232]
