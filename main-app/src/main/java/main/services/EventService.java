@@ -1,13 +1,10 @@
 package main.services;
 
 import jakarta.transaction.Transactional;
-import main.entities.Booking;
 import main.entities.Event;
 import main.entities.User;
 import main.exceptions.EventNotFoundException;
 import lombok.RequiredArgsConstructor;
-import main.repositories.BookingRepository;
-import main.repositories.UserRepository;
 import main.web.dto.EditEventDTO;
 import main.web.dto.EventAnalyticsDTO;
 import main.web.dto.UserDTO;
@@ -18,7 +15,6 @@ import main.repositories.EventRepository;
 import main.web.dto.EventDTO;
 
 import java.nio.file.AccessDeniedException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
