@@ -35,3 +35,82 @@ body {
 .btn-back {
     margin-top: 1.5rem;
 }
+
+@media (max-width: 992px) {
+    .card {
+        max-width: 420px;
+        padding: 1.8rem;
+    }
+
+    .error-code {
+        font-size: 2.8rem;
+    }
+
+    .error-title {
+        font-size: 1.4rem;
+    }
+
+    .error-message {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+        height: auto;
+    }
+
+    .card {
+        max-width: 380px;
+        padding: 1.6rem;
+        border-radius: 0.9rem;
+    }
+
+    .error-code {
+        font-size: 2.4rem;
+    }
+
+    .error-title {
+        font-size: 1.3rem;
+    }
+
+    .error-message {
+        font-size: 1rem;
+    }
+
+    .btn-back {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    .card {
+        max-width: 100%;
+        padding: 1.4rem;
+        border-radius: 0.8rem;
+    }
+
+    .error-code {
+        font-size: 2rem;
+    }
+
+    .error-title {
+        font-size: 1.2rem;
+    }
+
+    .error-message {
+        font-size: 0.95rem;
+    }
+
+    .btn-back {
+        padding: 10px;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+}
