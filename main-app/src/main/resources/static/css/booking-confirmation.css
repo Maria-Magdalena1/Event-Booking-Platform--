@@ -124,12 +124,100 @@ body > * {
     color: #fff;
 }
 
-@media (max-width: 768px) {
-    .btn-group {
-        flex-direction: column;
+@media (max-width: 992px) {
+    body {
+        padding: 20px;
+        align-items: flex-start;
     }
 
-    .btn-success, .btn-outline-secondary, .btn-home {
+    .card {
+        max-width: 500px;
+        padding: 25px 30px;
+        border-radius: 25px;
+        margin-top: 40px;
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+    }
+
+    .card p {
+        font-size: 1.05rem;
+    }
+
+    .btn-group {
+        gap: 18px;
+    }
+
+    .btn-success,
+    .btn-outline-secondary,
+    .btn-home {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    .card {
+        padding: 25px 25px;
+        border-radius: 20px;
+        margin-top: 40px;
+        max-width: 450px;
+    }
+
+    .card-title {
+        font-size: 1.7rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-success,
+    .btn-outline-secondary,
+    .btn-home {
         width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 20px 18px;
+        border-radius: 18px;
+        max-width: 100%;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .card p {
+        font-size: 1rem;
+    }
+
+    .btn-success,
+    .btn-outline-secondary,
+    .btn-home {
+        padding: 10px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+    }
+
+    .btn-group {
+        gap: 12px;
     }
 }
