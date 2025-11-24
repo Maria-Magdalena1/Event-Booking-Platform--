@@ -117,3 +117,66 @@ form input:focus {
         transform: translateY(0);
     }
 }
+
+@media (max-width: 992px) {
+    .profile-container {
+        padding-top: 70px;
+    }
+
+    .profile-card {
+        padding: 30px;
+    }
+
+    form input {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding-top: 50px;
+    }
+
+    .profile-card {
+        padding: 25px 20px;
+        width: 90%;
+    }
+
+    form input {
+        font-size: 0.9rem;
+    }
+
+    .btn, .btn-secondary {
+        font-size: 0.9rem;
+        padding: 8px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 20px 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    form label {
+        font-size: 0.9rem;
+    }
+
+    form input {
+        font-size: 0.85rem;
+    }
+
+    .btn, .btn-secondary {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+}
