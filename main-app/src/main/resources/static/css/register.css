@@ -132,6 +132,26 @@ footer {
     transition: color 0.3s ease;
 }
 
+@media (max-width: 992px) {
+    .register-card {
+        padding: 30px;
+        max-width: 90%;
+    }
+
+    .register-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .register-card p {
+        font-size: 1rem;
+    }
+
+    .register-card .btn {
+        padding: 9px 22px;
+        font-size: 0.95rem;
+    }
+}
+
 @media (max-width: 768px) {
     .register-card {
         padding: 25px;
