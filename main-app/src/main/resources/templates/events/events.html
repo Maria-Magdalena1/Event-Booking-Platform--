@@ -70,7 +70,7 @@
                        th:href="@{/events/{id}(id=${ev.id})}"
                        class="btn btn-primary">Details</a>
 
-                    <div th:if="${ev.canEditDelete}" class="mt-2">
+                    <div th:if="${ev.canEditDelete and isAdmin}" class="mt-2">
                         <a th:href="@{|/events/${ev.id}/event-edit|}"
                            class="btn btn-sm btn-outline-secondary me-1">Edit</a>
                         <form th:action="@{|/events/${ev.id}/delete|}" method="post" style="display:inline;">
