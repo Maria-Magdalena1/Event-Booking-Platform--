@@ -202,3 +202,108 @@ h2 {
     margin-top: 0;
 }
 
+@media (max-width: 992px) {
+    .container {
+        max-width: 750px;
+        padding: 15px;
+    }
+
+    .event-card h5 {
+        font-size: 1.2rem;
+    }
+
+    .event-card p {
+        font-size: 0.9rem;
+    }
+
+    .event-card .btn-primary {
+        font-size: 0.95rem;
+        padding: 8px 16px;
+    }
+
+    .btn-sm {
+        font-size: 0.85rem;
+        padding: 6px 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav.navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+
+    nav.navbar .nav-link {
+        margin: 5px 0;
+    }
+
+    .container {
+        max-width: 90%;
+        padding: 10px;
+    }
+
+    .event-card {
+        flex-direction: column;
+        padding: 12px 10px;
+    }
+
+    .event-card h5 {
+        font-size: 1.1rem;
+    }
+
+    .event-card p {
+        font-size: 0.88rem;
+    }
+
+    .event-card .btn-primary {
+        font-size: 0.9rem;
+        padding: 7px 14px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    nav.navbar .navbar-brand {
+        font-size: 1.3rem;
+    }
+
+    .container {
+        padding: 5px;
+    }
+
+    .event-card {
+        padding: 10px 8px;
+        border-radius: 15px;
+    }
+
+    .event-card h5 {
+        font-size: 1rem;
+    }
+
+    .event-card p {
+        font-size: 0.85rem;
+    }
+
+    .event-card .btn-primary {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        width: 100%;
+    }
+
+    .btn-sm {
+        font-size: 0.75rem;
+        padding: 5px 12px;
+    }
+
+    footer {
+        font-size: 0.9rem;
+        padding: 15px 0;
+    }
+}
