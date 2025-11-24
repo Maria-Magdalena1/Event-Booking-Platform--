@@ -81,7 +81,7 @@ public class ProfileController {
     }
 
     @PostMapping("/block/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String toggleBlockUser(@PathVariable UUID userId) {
         userService.toggleBlockUser(userId);
         return "redirect:/user/profile";
