@@ -34,8 +34,42 @@ nav.navbar .navbar-nav .nav-item:last-child .nav-link {
     margin-right: 0;
 }
 
+@media (max-width: 992px) {
+    nav.navbar {
+        padding: 8px 15px;
+    }
+
+    nav.navbar .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    nav.navbar .nav-link {
+        margin-right: 12px;
+        padding: 4px 8px;
+        font-size: 0.95rem;
+    }
+}
+
 @media (max-width: 768px) {
+    nav.navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+
     nav.navbar .nav-link {
         margin: 5px 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    nav.navbar .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    nav.navbar .nav-link {
+        font-size: 0.9rem;
+        padding: 4px 6px;
     }
 }
