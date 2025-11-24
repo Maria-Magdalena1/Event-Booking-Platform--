@@ -142,3 +142,65 @@ footer {
     font-weight: 600;
     transition: color 0.3s ease;
 }
+
+@media (max-width: 992px) {
+    section.text-center.bg-light {
+        padding: 80px 20px;
+        margin: 50px auto 30px;
+    }
+
+    h1.display-4 {
+        font-size: 2.5rem;
+    }
+
+    p.lead {
+        font-size: 1.1rem;
+    }
+
+    section.container {
+        padding: 50px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    section.text-center.bg-light {
+        padding: 60px 15px;
+        margin: 40px auto 25px;
+    }
+
+    h1.display-4 {
+        font-size: 2rem;
+    }
+
+    p.lead {
+        font-size: 1rem;
+    }
+
+    section.container {
+        padding: 40px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    section.text-center.bg-light {
+        padding: 40px 10px;
+        margin: 30px 10px 20px;
+    }
+
+    h1.display-4 {
+        font-size: 1.5rem;
+    }
+
+    p.lead {
+        font-size: 0.9rem;
+    }
+
+    section.container {
+        padding: 30px 15px;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+}
