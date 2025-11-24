@@ -71,8 +71,6 @@ public class EventController {
                         boolean canEditDelete = currentUser.getRole() == Role.ADMIN ||
                                 ((creatorId != null && creatorId.equals(currentUser.getId())) && eventDTO.getAvailableSeats() > 0);
 
-                        //boolean canEditDelete = (creatorId != null && creatorId.equals(currentUser.getId())) ||
-                        //        currentUser.getRole().toString().equals("ADMIN");
                         eventDTO.setCanEditDelete(canEditDelete);
                     });
                     currentUserOpt.ifPresent(user -> mav.addObject("isAdmin", user.getRole() == Role.ADMIN));
