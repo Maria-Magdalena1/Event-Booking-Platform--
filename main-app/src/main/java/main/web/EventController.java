@@ -3,6 +3,7 @@ package main.web;
 import jakarta.transaction.Transactional;
 import main.entities.Event;
 import jakarta.validation.Valid;
+import main.entities.Role;
 import main.entities.User;
 import main.exceptions.EventNotFoundException;
 import main.microservices.AnalyticsClient;
@@ -71,6 +72,8 @@ public class EventController {
                                 currentUser.getRole().toString().equals("ADMIN");
                         eventDTO.setCanEditDelete(canEditDelete);
                     });
+                    currentUserOpt.ifPresent(user -> mav.addObject("isAdmin", user.getRole() == Role.ADMIN));
+
                     return eventDTO;
                 })
                 .collect(Collectors.toList());
