@@ -98,12 +98,83 @@
     transform: translateY(-2px);
 }
 
-@media (max-width: 576px) {
-    .status-card {
+@media (max-width: 992px) {
+
+    .status-wrapper {
         padding: 30px 20px;
+    }
+
+    .status-card {
+        max-width: 420px;
+        padding: 35px 25px;
+    }
+
+    .card-title {
+        font-size: 1.7rem;
+    }
+
+    .booking-info p {
+        font-size: 1.05rem;
+    }
+
+    .btn-home {
+        padding: 12px 28px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .status-wrapper {
+        padding: 25px 15px;
+        align-items: flex-start;
+    }
+
+    .status-card {
+        max-width: 380px;
+        padding: 30px 22px;
+        border-radius: 18px;
+    }
+
+    .card-title {
+        font-size: 1.6rem;
+    }
+
+    .booking-info p {
+        font-size: 1rem;
+        line-height: 1.4;
     }
 
     .btn-home {
         width: 100%;
+        padding: 12px;
+        border-radius: 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .status-wrapper {
+        padding: 15px 10px;
+    }
+
+    .status-card {
+        max-width: 100%;
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .card-title {
+        font-size: 1.45rem;
+    }
+
+    .booking-info p {
+        font-size: 0.95rem;
+    }
+
+    .btn-home {
+        padding: 10px;
+        font-size: 0.9rem;
     }
 }
