@@ -105,10 +105,14 @@ public class UserService implements UserDetailsService {
 
     public void toggleBlockUser(UUID id) {
         User user = findById(id);
+
+        if (user.getRole() == Role.ADMIN) {
+            return;
+        }
+
         user.setActive(!user.getActive());
         save(user);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
