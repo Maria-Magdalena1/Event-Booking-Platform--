@@ -91,6 +91,22 @@ form input:focus {
     background: #ff9460;
 }
 
+.btn-secondary {
+    width: auto;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    background: #ffb07c;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #ff9460;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
