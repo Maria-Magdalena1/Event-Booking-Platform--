@@ -179,25 +179,88 @@ textarea.form-control {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .form-wrapper {
-        padding: 30px 25px;
-        max-width: 95%;
+        max-width: 650px;
+        padding: 30px 40px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .form-control {
+        font-size: 14px;
+        padding: 11px 14px;
     }
 
     .btn-success {
-        width: 100%;
-        margin-bottom: 10px;
+        font-size: 0.95rem;
+        padding: 11px 0;
+    }
+
+    .btn-outline-secondary {
+        padding: 9px 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 30px 10px;
+    }
+
+    .form-wrapper {
+        max-width: 95%;
+        padding: 25px 20px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+
+    .form-control {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .btn-success {
+        font-size: 0.95rem;
+        padding: 11px 0;
+    }
+
+    .btn-outline-secondary {
+        padding: 8px 20px;
     }
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 15px 5px;
+    }
+
+    .form-wrapper {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+
     h2 {
         font-size: 1.5rem;
+        margin-bottom: 20px;
     }
 
     .form-control {
-        padding: 10px;
+        font-size: 0.9rem;
+        padding: 9px 10px;
+    }
+
+    .btn-success {
+        font-size: 0.9rem;
+        padding: 10px 0;
+    }
+
+    .btn-outline-secondary {
+        padding: 7px 18px;
         font-size: 0.9rem;
     }
 }
