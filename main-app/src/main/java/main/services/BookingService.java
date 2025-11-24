@@ -66,16 +66,16 @@ public class BookingService {
 
         double totalPrice = event.getPrice() * booking.getSeatsBooked();
         booking.setTotalPrice(totalPrice);
+        booking.setStatus(BookingStatus.CONFIRMED);
 
-        String qrData ="\nEvent: " + booking.getEvent().getName()
-                + "\nSeats: " + booking.getSeatsBooked()
-                + "\nStart Date: " + booking.getEvent().getStartDate()
-                + "\nEnd Date: " + booking.getEvent().getEndDate();
+        String qrData ="Event: " + booking.getEvent().getName()
+                + "Seats: " + booking.getSeatsBooked()
+                + "Start Date: " + booking.getEvent().getStartDate()
+                + "End Date: " + booking.getEvent().getEndDate();
 
-        String qrBase64 = qrCodeService.generateQRCodeBase64(qrData, 250, 250);
+        String qrBase64 = qrCodeService.generateQRCodeBase64(qrData);
         booking.setQrCodeBase64(qrBase64);
 
-        booking.setStatus(BookingStatus.CONFIRMED);
         bookingRepository.save(booking);
 
         return booking;
