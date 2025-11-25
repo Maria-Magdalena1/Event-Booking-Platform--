@@ -91,7 +91,7 @@ public class EventService {
             );
         }
 
-        EventDTO dto = EventDTO.builder()
+        return EventDTO.builder()
                 .id(event.getId())
                 .name(event.getName())
                 .description(event.getDescription())
@@ -104,7 +104,6 @@ public class EventService {
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
                 .build();
-        return dto;
     }
 
     public void delete(UUID id, User currentUser) throws AccessDeniedException {
