@@ -1,6 +1,5 @@
-package bg.softuni.eventbookingplatform;
+package main;
 
-import main.EventBookingPlatformApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
