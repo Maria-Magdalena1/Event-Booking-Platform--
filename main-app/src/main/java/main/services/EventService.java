@@ -41,6 +41,7 @@ public class EventService {
         if (eventDTO.getStartDate().isAfter(eventDTO.getEndDate())) {
             throw new IllegalArgumentException("Start date must be before end date");
         }
+
         Event event = Event.builder()
                 .name(eventDTO.getName())
                 .description(eventDTO.getDescription())
@@ -59,18 +60,24 @@ public class EventService {
     }
 
     @Transactional
-    public void update(UUID id, EditEventDTO eventDTO) {
-        Event existingEvent = eventRepository.findById(id)
+    public Event update(UUID id, EditEventDTO eventDTO) {
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException("Event not found"));
 
-        existingEvent.setName(eventDTO.getName());
-        existingEvent.setDescription(eventDTO.getDescription());
-        existingEvent.setStartDate(eventDTO.getStartDate());
-        existingEvent.setEndDate(eventDTO.getEndDate());
-        existingEvent.setVenue(eventDTO.getVenue());
-        existingEvent.setLocation(eventDTO.getLocation());
-        existingEvent.setPrice(eventDTO.getPrice());
-        eventRepository.save(existingEvent);
+        if (eventDTO.getStartDate() != null && eventDTO.getEndDate() != null &&
+                eventDTO.getStartDate().isAfter(eventDTO.getEndDate())) {
+            throw new IllegalArgumentException("Start date must be before end date");
+        }
+
+        if (eventDTO.getName() != null) event.setName(eventDTO.getName());
+        if (eventDTO.getDescription() != null) event.setDescription(eventDTO.getDescription());
+        if (eventDTO.getStartDate() != null) event.setStartDate(eventDTO.getStartDate());
+        if (eventDTO.getEndDate() != null) event.setEndDate(eventDTO.getEndDate());
+        if (eventDTO.getVenue() != null) event.setVenue(eventDTO.getVenue());
+        if (eventDTO.getLocation() != null) event.setLocation(eventDTO.getLocation());
+        if (eventDTO.getPrice() != null) event.setPrice(eventDTO.getPrice());
+
+        return eventRepository.save(event);
     }
 
     public void update(Event event) {
@@ -146,5 +153,4 @@ public class EventService {
                 event.getPrice()
         );
     }
-
 }
