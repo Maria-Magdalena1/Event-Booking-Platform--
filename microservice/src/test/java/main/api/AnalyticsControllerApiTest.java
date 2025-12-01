@@ -102,21 +102,47 @@ public class AnalyticsControllerApiTest {
     }
 
     @Test
-    void testGetDashboardWithEvents() throws Exception {
-        Event event = new Event(eventId, "Concert", 100, 50.0);
-        Booking booking = new Booking(bookingId, eventId, userId, 3, 150.0);
+    void testGetDashboardWithData_fullCoverage() throws Exception {
+        UUID user1 = UUID.randomUUID();
+        UUID user2 = UUID.randomUUID();
 
-        Mockito.when(eventService.findAll()).thenReturn(List.of(event));
-        Mockito.when(bookingService.findAll()).thenReturn(List.of(booking));
-        Mockito.when(userService.count()).thenReturn(1L);
-        Mockito.when(eventService.count()).thenReturn(1L);
-        Mockito.when(bookingService.count()).thenReturn(1L);
-        Mockito.when(userService.findAll()).thenReturn(List.of(new User(userId, "testUser")));
+        User u1 = new User(user1, "Alice");
+        User u2 = new User(user2, "Bob");
+
+        UUID event1 = UUID.randomUUID();
+        UUID event2 = UUID.randomUUID();
+
+        Event e1 = new Event(event1, "Concert", 100, 50.0);
+        Event e2 = new Event(event2, "Workshop", 10, 20.0);
+
+        Booking b1 = new Booking(UUID.randomUUID(), event1, user1, 3, 150.0);
+        Booking b2 = new Booking(UUID.randomUUID(), event1, user2, 5, 250.0);
+        Booking b3 = new Booking(UUID.randomUUID(), event2, user1, 6, 120.0);
+
+        Mockito.when(userService.count()).thenReturn(2L);
+        Mockito.when(eventService.count()).thenReturn(2L);
+        Mockito.when(bookingService.count()).thenReturn(3L);
+
+        Mockito.when(userService.findAll()).thenReturn(List.of(u1, u2));
+        Mockito.when(eventService.findAll()).thenReturn(List.of(e1, e2));
+        Mockito.when(bookingService.findAll()).thenReturn(List.of(b1, b2, b3));
 
         mockMvc.perform(get("/api/dashboard"))
                 .andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.totalUsers").value(2))
+                .andExpect(jsonPath("$.totalEvents").value(2))
+                .andExpect(jsonPath("$.totalBookings").value(3))
+                .andExpect(jsonPath("$.totalRevenue").value(520.0))
+
                 .andExpect(jsonPath("$.topEvents[0].name").value("Concert"))
-                .andExpect(jsonPath("$.topEvents[0].totalSeatsBooked").value(3));
+                .andExpect(jsonPath("$.topEvents[0].totalSeatsBooked").value(8))
+
+                .andExpect(jsonPath("$.topUsers[0].username").value("Alice"))
+                .andExpect(jsonPath("$.topUsers[0].totalBookedSeats").value(9))
+
+                .andExpect(jsonPath("$.seatWarnings[0].eventName").value("Workshop"))
+                .andExpect(jsonPath("$.seatWarnings[0].freeSeats").value(4));
     }
 
     @Test
