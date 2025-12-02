@@ -1,6 +1,7 @@
 package main.services;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import main.entities.Booking;
 import main.entities.BookingStatus;
 import main.entities.Event;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingService {
@@ -29,7 +31,10 @@ public class BookingService {
 
     @Transactional
     public Booking createBooking(User user, Event event, int seats) {
+        log.info("User {} is attempting to create a booking for event {} with {} seats",
+                user.getUsername(), event.getName(), seats);
         if (event.getAvailableSeats() < seats) {
+            log.warn("Booking failed: Not enough seats available for event {}", event.getName());
             throw new NoAvailableSeatsException("Not enough available seats");
         }
 
@@ -43,21 +48,30 @@ public class BookingService {
 
         bookingRepository.save(booking);
         eventService.save(event);
+
+        log.info("Booking created successfully with id {}", booking.getId());
         return booking;
     }
 
     @Transactional
     public Booking confirmBooking(UUID bookingId) {
+        log.info("Attempting to confirm booking with id {}", bookingId);
+
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundBookingException("Booking not found"));
+                .orElseThrow(() -> {
+                    log.warn("Booking {} not found!", bookingId);
+                    return new NotFoundBookingException("Booking not found");
+                });
 
         if (booking.getStatus() == BookingStatus.CONFIRMED) {
+            log.warn("Booking {} is already confirmed", bookingId);
             throw new BookingAlreadyConfirmedException("Booking already confirmed");
         }
 
         Event event = booking.getEvent();
 
         if (booking.getSeatsBooked() > event.getAvailableSeats()) {
+            log.error("Cannot confirm booking {}: not enough seats", bookingId);
             throw new IllegalStateException("Not enough available seats to confirm this booking.");
         }
 
@@ -78,21 +92,30 @@ public class BookingService {
 
         bookingRepository.save(booking);
 
+        log.info("Booking {} confirmed successfully for user {}", bookingId, booking.getUser().getUsername());
         return booking;
     }
 
     @Transactional
     public Booking cancelBooking(UUID bookingId) {
+        log.info("Attempting to cancel booking with id {}", bookingId);
+
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundBookingException("Booking not found"));
+                .orElseThrow(() -> {
+                    log.warn("Booking {} not found", bookingId);
+                    return new NotFoundBookingException("Booking not found");
+                });
 
         if (booking.getStatus() == BookingStatus.CANCELLED) {
+            log.warn("Booking {} is already cancelled", bookingId);
             throw new BookingAlreadyCancelledException("Booking already cancelled");
         }
 
         booking.setStatus(BookingStatus.CANCELLED);
 
         save(booking);
+
+        log.info("Booking {} cancelled successfully", bookingId);
         return booking;
     }
 
