@@ -1,6 +1,7 @@
 package main.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import main.entity.Booking;
 import main.entity.Event;
 import main.entity.User;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class AnalyticsController {
 
     @GetMapping("/dashboard")
     public Map<String, Object> getDashboard() {
+        log.info("Dashboard requested");
         Map<String, Object> dashboard = new HashMap<>();
         dashboard.put("totalUsers", userService.count());
         dashboard.put("totalEvents", eventService.count());
@@ -93,11 +96,14 @@ public class AnalyticsController {
                 .toList();
 
         dashboard.put("seatWarnings", seatWarnings);
+
+        log.info("Dashboard generated successfully");
         return dashboard;
     }
 
     @GetMapping("/events")
     public List<EventDTO> getAllEvents() {
+        log.info("Fetching all events");
         return eventService.findAll().stream()
                 .map(event -> new EventDTO(
                         event.getId(),
@@ -110,12 +116,15 @@ public class AnalyticsController {
 
     @PostMapping("/events")
     public void addEvent(@RequestBody EventDTO dto) {
+        log.info("Adding event '{}' with id {}", dto.getName(), dto.getId());
         Event event = new Event(dto.getId(), dto.getName(), dto.getTotalSeats(), dto.getPrice());
         eventService.save(event);
+        log.info("Event '{}' added successfully", dto.getName());
     }
 
     @GetMapping("/bookings")
     public List<BookingDTO> getAllBookings() {
+        log.info("Fetching all bookings");
         return bookingService.findAll().stream()
                 .map(b -> new BookingDTO(
                         b.getId(),
@@ -129,12 +138,15 @@ public class AnalyticsController {
 
     @PostMapping("/bookings")
     public void confirmBooking(@RequestBody BookingDTO dto) {
+        log.info("Confirming booking with id {}", dto.getId());
         Booking booking = new Booking(dto.getId(), dto.getEventId(), dto.getUserId(), dto.getSeatsBooked(), dto.getPrice());
         bookingService.save(booking);
+        log.info("Booking with id {} confirmed successfully", dto.getId());
     }
 
     @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
+        log.info("Fetching all users");
         return userService.findAll().stream()
                 .map(b -> new UserDTO(
                         b.getId(),
@@ -145,8 +157,10 @@ public class AnalyticsController {
 
     @PostMapping("/users")
     public void addUser(@RequestBody UserDTO dto) {
+        log.info("Adding user '{}' with id {}", dto.getUsername(), dto.getId());
         User user = new User(dto.getId(), dto.getUsername());
         userService.save(user);
+        log.info("User '{}' added successfully", dto.getUsername());
     }
 
 }
