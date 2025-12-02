@@ -7,7 +7,7 @@
 - **Main Application**: Handles user management, event management, and bookings.
 - **Data Analysis Service (Microservice)**: Analyzes event data and allows the administrator to perform analysis via a button in the interface.
 
-## Core Functionalities
+## Main Application Core Functionalities
 - **User Management**:
   *Registration and login of users.
   *Role-based access(admin, user)
@@ -21,6 +21,11 @@
 - **Integration**: Provides a REST API for external applications to interact with events and bookings.
 - **Data Analysis**: Admins can perform analytics via the Data Analysis Microservice using a dedicated button in the UI.
 
+## Data Analysis Microservice Functionalities
+- **Dashboard generation** – aggregated statistics about users, bookings, revenue.
+- **Top events and users analysis**| – identifies the most active users and the most booked events.
+- **Seat availability warnings** – shows events with critically low available seats.
+  
 ## Technologies
 - **Backend**: Java 17, Spring Boot 3.4.0, Spring Data JPA 
 - **Database**: MySQL
