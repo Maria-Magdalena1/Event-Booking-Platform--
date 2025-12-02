@@ -1,6 +1,7 @@
 package main.web;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import main.entities.Event;
 import jakarta.validation.Valid;
 import main.entities.Role;
@@ -28,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/events")
 public class EventController {
@@ -50,6 +52,12 @@ public class EventController {
     public ModelAndView eventPage(Principal principal,
                                   @ModelAttribute("successMessage") String successMessage,
                                   @ModelAttribute("errorMessage") String errorMessage) {
+        if (principal != null) {
+            log.info("User {} accessed the events page", principal.getName());
+        } else {
+            log.info("Anonymous user accessed the events page");
+        }
+
         ModelAndView mav = new ModelAndView("events/events");
 
         Optional<User> currentUserOpt = Optional.ofNullable(principal)
@@ -108,8 +116,13 @@ public class EventController {
                                  @RequestParam(required = false) String action,
                                  @RequestParam(required = false) String aiTitle) {
 
-        if ("generateDescription".equals(action)) {
+        if (eventDTO.getStartDate() != null && eventDTO.getEndDate() != null &&
+                eventDTO.getEndDate().isBefore(eventDTO.getStartDate())) {
+            bindingResult.rejectValue("startDate", "invalidDates", "start date must be before end date");
+        }
 
+        if ("generateDescription".equals(action)) {
+            log.info("User {} requested AI description for '{}'", principal.getName(), aiTitle);
             if (aiTitle != null && !aiTitle.isBlank()) {
                 String generatedDescription = aiService.generateEventDescription(aiTitle);
                 eventDTO.setDescription(generatedDescription);
@@ -124,6 +137,7 @@ public class EventController {
         }
 
         if (bindingResult.hasErrors()) {
+            log.warn("Validation errors while adding event by user {}: {}", principal.getName(), bindingResult.getAllErrors());
             return new ModelAndView("events/add-event");
         }
 
@@ -132,18 +146,23 @@ public class EventController {
 
             Event event = eventService.create(eventDTO, user);
             analyticsClient.addEvent(eventService.mapToAnalytics(event));
+            log.info("User {} created event '{}' with id {}", principal.getName(), event.getName(), event.getId());
             redirectAttributes.addFlashAttribute("successMessage", "Event created successfully!");
         } catch (IllegalArgumentException e) {
+            log.warn("User {} failed to create event: {}", principal.getName(), e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/events/add-event");
         } catch (Exception e) {
+            log.error("Unexpected error while user {} tried to create event: {}", principal.getName(), e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to create event!");
+            return new ModelAndView("redirect:/events/add-event");
         }
         return new ModelAndView("redirect:/events");
     }
 
     @GetMapping("/{id}")
     public ModelAndView eventDetails(@PathVariable UUID id, Principal principal) {
+        log.info("Event details requested for id {}", id);
         Event event = eventService.findById(id);
         ModelAndView mav = new ModelAndView("events/event-details");
 
@@ -167,6 +186,7 @@ public class EventController {
     @PreAuthorize("@eventSecurity.canEditOrDelete(#id, authentication.principal.userId, authentication.principal.role)")
     @GetMapping("/{id}/event-edit")
     public ModelAndView showEditForm(@PathVariable UUID id) {
+        log.info("Edit form requested for event {}", id);
         Event existingEvent = eventService.findById(id);
         if (existingEvent == null) {
             throw new EventNotFoundException("Event not found");
@@ -198,12 +218,24 @@ public class EventController {
                                   @ModelAttribute("event") @Valid EditEventDTO eventDTO,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
+        log.info("User submitted edit for event {}", id);
+
+        if (eventDTO.getStartDate() != null && eventDTO.getEndDate() != null &&
+                eventDTO.getEndDate().isBefore(eventDTO.getStartDate())) {
+
+            bindingResult.rejectValue(
+                    "startDate", "invalidDates", "start date must be before end date");
+        }
+
         if (bindingResult.hasErrors()) {
+            log.warn("Validation errors while editing event {}: {}", id, bindingResult.getAllErrors());
             ModelAndView mav = new ModelAndView("events/event-edit");
             mav.addObject("event", eventDTO);
             return mav;
         }
         eventService.update(id, eventDTO);
+        log.info("Event {} updated successfully", id);
+
         redirectAttributes.addFlashAttribute("successMessage", "Event updated successfully!");
         return new ModelAndView("redirect:/events");
     }
@@ -212,9 +244,12 @@ public class EventController {
     @PreAuthorize("@eventSecurity.canEditOrDelete(#id, authentication.principal.userId, authentication.principal.role)")
     @PostMapping("/{id}/delete")
     public String deleteEvent(@PathVariable UUID id, Principal principal) throws AccessDeniedException {
+        log.info("User {} is attempting to delete event {}", principal.getName(), id);
+
         User currentUser = userService.findByUsername(principal.getName());
         eventService.delete(id, currentUser);
 
+        log.info("Event {} deleted successfully by user {}", id, principal.getName());
         return "redirect:/events";
     }
 
