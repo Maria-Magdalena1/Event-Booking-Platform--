@@ -15,9 +15,9 @@
   * Admins/organizers can add, edit, and delete events.
   * Events include details such as name, description, dates, price, venue, and location.
 - **Booking Management**:
-  *Create a booking – users/admins select seats and book an event.
-  *Confirm a booking – users/admins confirm a pending booking.
-  *Cancel a booking – users/admins cancel a pending booking.
+  * Create a booking – users/admins select seats and book an event.
+  * Confirm a booking – users/admins confirm a pending booking.
+  * Cancel a booking – users/admins cancel a pending booking.
 - **Integration**: Provides a REST API for external applications to interact with events and bookings.
 - **Data Analysis**: Admins can perform analytics via the Data Analysis Microservice using a dedicated button in the UI.
 
