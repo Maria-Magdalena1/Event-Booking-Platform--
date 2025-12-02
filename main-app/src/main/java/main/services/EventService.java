@@ -1,6 +1,7 @@
 package main.services;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import main.entities.Event;
 import main.entities.User;
 import main.exceptions.EventNotFoundException;
@@ -19,14 +20,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
 
     public Event findById(UUID id) {
+        log.info("Fetching event with id {}", id);
         return eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+                .orElseThrow(() -> {
+                    log.warn("Event not found");
+                    return new EventNotFoundException("Event not found");
+                });
     }
 
     public List<Event> findUpcomingEvents() {
@@ -38,7 +44,11 @@ public class EventService {
     }
 
     public Event create(EventDTO eventDTO, User user) {
+        log.info("User {} is attempting to create event '{}'", user.getUsername(), eventDTO.getName());
+
         if (eventDTO.getStartDate().isAfter(eventDTO.getEndDate())) {
+            log.warn("Event creation failed: start date {} is after end date {}",
+                    eventDTO.getStartDate(), eventDTO.getEndDate());
             throw new IllegalArgumentException("Start date must be before end date");
         }
 
@@ -56,16 +66,25 @@ public class EventService {
                 .build();
 
         save(event);
+        log.info("Event '{}' created successfully with id {}", event.getName(), event.getId());
+
         return event;
     }
 
     @Transactional
     public Event update(UUID id, EditEventDTO eventDTO) {
+        log.info("Updating event with id {}", id);
+
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+                .orElseThrow(() -> {
+                    log.warn("Event with id {} not found", id);
+                    return new EventNotFoundException("Event not found");
+                });
 
         if (eventDTO.getStartDate() != null && eventDTO.getEndDate() != null &&
                 eventDTO.getStartDate().isAfter(eventDTO.getEndDate())) {
+            log.warn("Update failed: start date {} is after end date {}",
+                    eventDTO.getStartDate(), eventDTO.getEndDate());
             throw new IllegalArgumentException("Start date must be before end date");
         }
 
@@ -77,7 +96,10 @@ public class EventService {
         if (eventDTO.getLocation() != null) event.setLocation(eventDTO.getLocation());
         if (eventDTO.getPrice() != null) event.setPrice(eventDTO.getPrice());
 
-        return eventRepository.save(event);
+        Event updatedEvent = eventRepository.save(event);
+        log.info("Event with id {} updated successfully", id);
+
+        return updatedEvent;
     }
 
     public void update(Event event) {
@@ -114,18 +136,25 @@ public class EventService {
     }
 
     public void delete(UUID id, User currentUser) throws AccessDeniedException {
+        log.info("User {} attempting to delete event with id {}", currentUser.getUsername(), id);
+
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+                .orElseThrow(() -> {
+                    log.warn("Event with id {} not found!", id);
+                    return new EventNotFoundException("Event not found");
+                });
 
         boolean isAdmin = "ADMIN".equals(currentUser.getRole().toString());
         boolean isOwner = event.getCreator().getId().equals(currentUser.getId());
         boolean isActive = event.getAvailableSeats() > 0;
 
         if (!isAdmin && (!isOwner || !isActive)) {
+            log.warn("Delete denied for user {} on event {}", currentUser.getUsername(), id);
             throw new AccessDeniedException("You cannot delete this event.");
         }
 
         eventRepository.deleteById(id);
+        log.info("Event with id {} deleted successfully by user {}", id, currentUser.getUsername());
     }
 
     public List<Event> findEventsByCreator(User user) {
