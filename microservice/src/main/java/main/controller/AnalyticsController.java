@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import main.entity.Booking;
 import main.entity.Event;
 import main.entity.User;
+import main.exceptions.InvalidEventDataException;
 import main.service.BookingService;
 import main.service.EventService;
 import main.service.UserService;
@@ -32,6 +33,7 @@ public class AnalyticsController {
     @GetMapping("/dashboard")
     public Map<String, Object> getDashboard() {
         log.info("Dashboard requested");
+
         Map<String, Object> dashboard = new HashMap<>();
         dashboard.put("totalUsers", userService.count());
         dashboard.put("totalEvents", eventService.count());
@@ -117,6 +119,11 @@ public class AnalyticsController {
     @PostMapping("/events")
     public void addEvent(@RequestBody EventDTO dto) {
         log.info("Adding event '{}' with id {}", dto.getName(), dto.getId());
+
+        if (dto.getTotalSeats() < 0) {
+            throw new InvalidEventDataException("Total seats cannot be negative");
+        }
+
         Event event = new Event(dto.getId(), dto.getName(), dto.getTotalSeats(), dto.getPrice());
         eventService.save(event);
         log.info("Event '{}' added successfully", dto.getName());
@@ -139,6 +146,11 @@ public class AnalyticsController {
     @PostMapping("/bookings")
     public void confirmBooking(@RequestBody BookingDTO dto) {
         log.info("Confirming booking with id {}", dto.getId());
+
+        if (dto.getPrice() < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+
         Booking booking = new Booking(dto.getId(), dto.getEventId(), dto.getUserId(), dto.getSeatsBooked(), dto.getPrice());
         bookingService.save(booking);
         log.info("Booking with id {} confirmed successfully", dto.getId());
