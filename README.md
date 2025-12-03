@@ -9,8 +9,8 @@
 
 ## Main Application Core Functionalities
 - **User Management**:
-  *Registration and login of users.
-  *Role-based access(admin, user)
+  * Registration and login of users.
+  * Role-based access(admin, user)
 - **Event Management**:
   * Admins/organizers can add, edit, and delete events.
   * Events include details such as name, description, dates, price, venue, and location.
