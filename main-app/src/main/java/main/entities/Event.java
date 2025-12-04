@@ -54,4 +54,7 @@ public class Event implements Serializable {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
+
+    @Column(nullable = false)
+    private boolean archived=false;
 }
