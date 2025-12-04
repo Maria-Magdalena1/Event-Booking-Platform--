@@ -1,7 +1,7 @@
-package main.service;
+package main.integration;
 
 import main.entity.User;
-import main.repositories.UserRepository;
+import main.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,9 +22,6 @@ public class UserServiceIntegrationTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
     void save_user_isPersisted() {
