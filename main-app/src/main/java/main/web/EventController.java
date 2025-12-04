@@ -71,8 +71,9 @@ public class EventController {
 
                     currentUserOpt.ifPresent(currentUser -> {
                         UUID creatorId = eventDTO.getCreator() != null ? eventDTO.getCreator().getId() : null;
-                        boolean canBook = eventDTO.getAvailableSeats() != null
-                                && eventDTO.getAvailableSeats() > 0
+                        boolean hasSeats = eventDTO.getAvailableSeats() != null
+                                && eventDTO.getAvailableSeats() > 0;
+                        boolean canBook = hasSeats
                                 && (creatorId == null || !creatorId.equals(currentUser.getId()));
                         eventDTO.setCanBook(canBook);
 
