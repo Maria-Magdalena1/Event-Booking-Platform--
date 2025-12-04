@@ -60,25 +60,6 @@ public class AnalyticsController {
 
         dashboard.put("topEvents", topEvents);
 
-        Map<UUID, Integer> bookingsByUser = bookingService.findAll().stream()
-                .collect(Collectors.groupingBy(
-                        Booking::getUserId,
-                        Collectors.summingInt(Booking::getSeatsBooked)
-                ));
-
-        List<Map<String, Object>> topUsers = userService.findAll().stream()
-                .map(u -> {
-                    Map<String, Object> m = new HashMap<>();
-                    m.put("username", u.getUsername());
-                    m.put("totalBookedSeats", bookingsByUser.getOrDefault(u.getId(), 0));
-                    return m;
-                })
-                .sorted((a, b) -> ((Integer) b.get("totalBookedSeats")).compareTo((Integer) a.get("totalBookedSeats")))
-                .limit(5)
-                .toList();
-
-        dashboard.put("topUsers", topUsers);
-
         Map<UUID, Integer> seatsByEvent = bookingService.findAll().stream()
                 .collect(Collectors.groupingBy(
                         Booking::getEventId,
@@ -94,7 +75,10 @@ public class AnalyticsController {
                     m.put("freeSeats", freeSeats);
                     return m;
                 })
-                .filter(m -> (Integer) m.get("freeSeats") <= 5)
+                .filter(m -> {
+                    int freeSeats = (Integer) m.get("freeSeats");
+                    return freeSeats >= 1 && freeSeats <= 5;
+                })
                 .toList();
 
         dashboard.put("seatWarnings", seatWarnings);
