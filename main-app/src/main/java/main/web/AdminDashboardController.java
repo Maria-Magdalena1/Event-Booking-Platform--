@@ -30,9 +30,6 @@ public class AdminDashboardController {
         List<Map<String, Object>> topEvents = (List<Map<String, Object>>) data.get("topEvents");
         mav.addObject("topEvents", topEvents);
 
-        List<Map<String, Object>> topUsers = (List<Map<String, Object>>) data.get("topUsers");
-        mav.addObject("topUsers", topUsers);
-
         List<Map<String, Object>> seatWarnings = (List<Map<String, Object>>) data.get("seatWarnings");
         mav.addObject("seatWarnings", seatWarnings);
 
