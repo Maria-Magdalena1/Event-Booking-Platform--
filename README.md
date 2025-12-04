@@ -53,3 +53,11 @@
 - Create, edit, or delete events if authorized.
 - Manage bookings (create, confirm, cancel) via the interface.
 - Admins can access analytics via the Data Analysis Microservice.
+
+## Environment Variables
+Each team member should add their own credentials as environment variables:
+
+```bash
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+OPENAI_API_KEY=your_openai_key
