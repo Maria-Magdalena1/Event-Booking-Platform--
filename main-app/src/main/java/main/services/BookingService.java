@@ -82,7 +82,7 @@ public class BookingService {
         booking.setTotalPrice(totalPrice);
         booking.setStatus(BookingStatus.CONFIRMED);
 
-        String qrData ="Event: " + booking.getEvent().getName()
+        String qrData = "Event: " + booking.getEvent().getName()
                 + "Seats: " + booking.getSeatsBooked()
                 + "Start Date: " + booking.getEvent().getStartDate()
                 + "End Date: " + booking.getEvent().getEndDate();
