@@ -8,6 +8,7 @@ import main.entities.Role;
 import main.entities.User;
 import main.exceptions.EventNotFoundException;
 import main.microservices.AnalyticsClient;
+import main.security.EventSecurity;
 import main.services.AiService;
 import main.services.UserService;
 import main.web.dto.EditEventDTO;
@@ -38,13 +39,15 @@ public class EventController {
     private final UserService userService;
     private final AiService aiService;
     private final AnalyticsClient analyticsClient;
+    private final EventSecurity eventSecurity;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService, AiService aiService, AnalyticsClient analyticsClient) {
+    public EventController(EventService eventService, UserService userService, AiService aiService, AnalyticsClient analyticsClient, EventSecurity eventSecurity) {
         this.eventService = eventService;
         this.userService = userService;
         this.aiService = aiService;
         this.analyticsClient = analyticsClient;
+        this.eventSecurity = eventSecurity;
     }
 
 
@@ -77,10 +80,13 @@ public class EventController {
                                 && (creatorId == null || !creatorId.equals(currentUser.getId()));
                         eventDTO.setCanBook(canBook);
 
-                        boolean canEditDelete = currentUser.getRole() == Role.ADMIN ||
-                                ((creatorId != null && creatorId.equals(currentUser.getId())) && eventDTO.getAvailableSeats() > 0);
-
+                        boolean canEditDelete = eventSecurity.canEditOrDelete(
+                                event.getId(),
+                                currentUser.getId(),
+                                currentUser.getRole().name()
+                        );
                         eventDTO.setCanEditDelete(canEditDelete);
+
                     });
                     currentUserOpt.ifPresent(user -> mav.addObject("isAdmin", user.getRole() == Role.ADMIN));
 
