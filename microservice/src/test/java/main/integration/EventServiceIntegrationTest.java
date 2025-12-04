@@ -1,7 +1,7 @@
-package main.service;
+package main.integration;
 
 import main.entity.Event;
-import main.repositories.EventRepository;
+import main.service.EventService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,9 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventServiceIntegrationTest {
     @Autowired
     private EventService eventService;
-
-    @Autowired
-    private EventRepository eventRepository;
 
     @Test
     void save_event_isPersisted() {
