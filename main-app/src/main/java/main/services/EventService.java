@@ -153,7 +153,8 @@ public class EventService {
             throw new AccessDeniedException("You cannot delete this event.");
         }
 
-        eventRepository.deleteById(id);
+        event.setArchived(true);
+        eventRepository.save(event);
         log.info("Event with id {} deleted successfully by user {}", id, currentUser.getUsername());
     }
 
@@ -162,16 +163,23 @@ public class EventService {
     }
 
     @Cacheable("upcomingEvents")
-    public void getUpcomingEvents() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime thirtyDaysLater = now.plusDays(30);
-        eventRepository.findByStartDateBetween(now, thirtyDaysLater);
+    public List<Event> getUpcomingEvents() {
+        return eventRepository.findAllUpcomingNotArchived(LocalDateTime.now());
+
     }
 
     @Transactional
     @CacheEvict(value = "upcomingEvents", allEntries = true)
     public void removeExpiredEvents() {
-        eventRepository.deleteAllByEndDateBefore(LocalDateTime.now());
+        List<Event> expiredEvents = eventRepository.findAllByEndDateBeforeAndArchivedFalse(LocalDateTime.now());
+
+        for (Event event : expiredEvents) {
+            event.setArchived(true);
+        }
+
+        eventRepository.saveAll(expiredEvents);
+
+        log.info("Archived {} expired events", expiredEvents.size());
     }
 
     public EventAnalyticsDTO mapToAnalytics(Event event) {
