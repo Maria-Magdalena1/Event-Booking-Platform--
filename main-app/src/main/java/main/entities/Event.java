@@ -56,5 +56,5 @@ public class Event implements Serializable {
     private User creator;
 
     @Column(nullable = false)
-    private boolean archived=false;
+    private boolean archived = false;
 }
