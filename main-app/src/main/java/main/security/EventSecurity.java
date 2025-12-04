@@ -12,9 +12,9 @@ import java.util.UUID;
 public class EventSecurity {
     private final EventService eventService;
 
-    public boolean isOwner(UUID eventId,UUID userId) {
-        Event event=eventService.findById(eventId);
-        if (event.getCreator()==null) {
+    public boolean isOwner(UUID eventId, UUID userId) {
+        Event event = eventService.findById(eventId);
+        if (event.getCreator() == null) {
             return false;
         }
         return event.getCreator().getId().equals(userId);
@@ -25,7 +25,7 @@ public class EventSecurity {
         if (event == null) return false;
 
         boolean isAdmin = "ADMIN".equals(role);
-        boolean isOwner = event.getCreator() != null && event.getCreator().getId().equals(userId);
+        boolean isOwner = isOwner(eventId, userId);
         boolean isActive = event.getAvailableSeats() > 0;
 
         return isAdmin || (isOwner && isActive);
