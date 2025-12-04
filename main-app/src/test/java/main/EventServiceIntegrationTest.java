@@ -181,20 +181,24 @@ public class EventServiceIntegrationTest {
 
     @Test
     void delete_event_asAdmin_success() throws AccessDeniedException {
+        event.setCreator(adminUser);
         eventService.save(event);
 
         eventService.delete(event.getId(), adminUser);
 
-        assertTrue(eventRepository.findById(event.getId()).isEmpty());
+        Event deletedEvent = eventRepository.findById(event.getId()).orElseThrow();
+        assertTrue(deletedEvent.isArchived(), "Event should be archived");
     }
 
     @Test
     void delete_event_asOwner_success() throws AccessDeniedException {
+        event.setCreator(user);
         eventService.save(event);
 
         eventService.delete(event.getId(), user);
 
-        assertTrue(eventRepository.findById(event.getId()).isEmpty());
+        Event deletedEvent = eventRepository.findById(event.getId()).orElseThrow();
+        assertTrue(deletedEvent.isArchived(), "Event should be archived");
     }
 
     @Test
@@ -254,13 +258,11 @@ public class EventServiceIntegrationTest {
         pastEvent.setAvailableSeats(50);
         eventService.save(pastEvent);
 
-        // when
-        eventService.getUpcomingEvents(); // void, кешира вътрешно или извиква репозитория
-        eventService.removeExpiredEvents(); // премахва изтеклите
+        eventService.removeExpiredEvents();
 
-        // then: проверяваме чрез репозитория директно
-        List<Event> remainingEvents = eventService.findEventsByCreator(null); // примерно, или findAllBy... без нов метод
-        assertThat(remainingEvents)
+        List<Event> upcomingEvents = eventService.getUpcomingEvents();
+
+        assertThat(upcomingEvents)
                 .hasSize(1)
                 .extracting(Event::getName)
                 .containsExactly("Future Event");
