@@ -175,7 +175,7 @@ public class EventServiceUnitTest {
 
         eventService.delete(event.getId(), admin);
 
-        Mockito.verify(eventRepository).deleteById(event.getId());
+        Mockito.verify(eventRepository).save(Mockito.argThat(Event::isArchived));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class EventServiceUnitTest {
 
         eventService.delete(event.getId(), user);
 
-        Mockito.verify(eventRepository).deleteById(event.getId());
+        Mockito.verify(eventRepository).save(Mockito.argThat(Event::isArchived));
     }
 
     @Test
@@ -214,19 +214,36 @@ public class EventServiceUnitTest {
 
     @Test
     void testGetUpcomingEvents() {
-        Mockito.when(eventRepository.findByStartDateBetween(Mockito.any(), Mockito.any()))
+        Mockito.when(eventRepository.findAllUpcomingNotArchived(Mockito.any()))
                 .thenReturn(Collections.singletonList(event));
 
         eventService.getUpcomingEvents();
 
-        Mockito.verify(eventRepository).findByStartDateBetween(Mockito.any(), Mockito.any());
+        Mockito.verify(eventRepository).findAllUpcomingNotArchived(Mockito.any());
     }
 
     @Test
     void testRemoveExpiredEvents() {
+        Event expiredEvent = new Event();
+        expiredEvent.setArchived(false);
+        expiredEvent.setEndDate(LocalDateTime.now().minusDays(1));
+
+        Mockito.when(eventRepository.findAllByEndDateBeforeAndArchivedFalse(Mockito.any()))
+                .thenReturn(List.of(expiredEvent));
+
         eventService.removeExpiredEvents();
 
-        Mockito.verify(eventRepository).deleteAllByEndDateBefore(Mockito.any());
+        Mockito.verify(eventRepository).saveAll(Mockito.argThat(list ->
+                {
+                    boolean[] allArchived = {true};
+                    list.forEach(e -> {
+                        if (!e.isArchived()) {
+                            allArchived[0] = false;
+                        }
+                    });
+                    return allArchived[0];
+                }
+        ));
     }
 
     @Test
