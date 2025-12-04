@@ -1,7 +1,7 @@
-package main.service;
+package main.integration;
 
 import main.entity.Booking;
-import main.repositories.BookingRepository;
+import main.service.BookingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,9 +22,6 @@ public class BookingServiceIntegrationTest {
 
     @Autowired
     private BookingService bookingService;
-
-    @Autowired
-    private BookingRepository bookingRepository;
 
     @Test
     void save_booking_isPersisted() {
