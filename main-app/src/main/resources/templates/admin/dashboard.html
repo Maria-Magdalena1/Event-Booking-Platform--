@@ -70,34 +70,6 @@
     </div>
 
     <div class="card shadow-sm p-4 mb-4">
-        <h4 class="mb-4">Top Users</h4>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Booked Seats</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${topUsers.isEmpty()}">
-                    <td colspan="2" class="text-center">No top users</td>
-                </tr>
-                <tr th:each="row : ${topUsers}">
-                    <td th:text="${row['username']}">Username</td>
-                    <td>
-                        <span th:text="${row['totalBookedSeats']}"
-                              th:classappend="${row['totalBookedSeats'] > 15} ? ' badge-high ' : (${row['totalBookedSeats'] > 7} ? ' badge-medium ' : ' badge-low ')">
-                            0
-                        </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card shadow-sm p-4 mb-4">
         <h4 class="mb-4">Seat Warnings</h4>
         <div class="table-responsive">
             <table class="table table-hover align-middle">
