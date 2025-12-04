@@ -18,10 +18,6 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     List<Event> findAllByCreator(User creator);
 
-    void deleteAllByEndDateBefore(LocalDateTime endDate);
-
-    List<Event> findByStartDateBetween(LocalDateTime now, LocalDateTime fiveDaysLater);
-
     List<Event> findAllByEndDateBeforeAndArchivedFalse(LocalDateTime now);
 
     @Query("""
