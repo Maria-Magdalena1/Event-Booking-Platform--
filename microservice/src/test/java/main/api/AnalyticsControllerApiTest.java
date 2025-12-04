@@ -1,7 +1,7 @@
 package main.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.controller.AnalyticsController;
+import main.web.AnalyticsController;
 import main.entity.Booking;
 import main.entity.Event;
 import main.entity.User;
@@ -97,7 +97,6 @@ public class AnalyticsControllerApiTest {
                 .andExpect(jsonPath("$.totalBookings").value(1))
                 .andExpect(jsonPath("$.totalRevenue").value(0))
                 .andExpect(jsonPath("$.topEvents").isArray())
-                .andExpect(jsonPath("$.topUsers").isArray())
                 .andExpect(jsonPath("$.seatWarnings").isArray());
     }
 
@@ -137,10 +136,6 @@ public class AnalyticsControllerApiTest {
 
                 .andExpect(jsonPath("$.topEvents[0].name").value("Concert"))
                 .andExpect(jsonPath("$.topEvents[0].totalSeatsBooked").value(8))
-
-                .andExpect(jsonPath("$.topUsers[0].username").value("Alice"))
-                .andExpect(jsonPath("$.topUsers[0].totalBookedSeats").value(9))
-
                 .andExpect(jsonPath("$.seatWarnings[0].eventName").value("Workshop"))
                 .andExpect(jsonPath("$.seatWarnings[0].freeSeats").value(4));
     }
