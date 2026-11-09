@@ -3,6 +3,7 @@
 ## Description
 **Event Booking Platform** is a web application built using a **microservice architecture**, designed for managing events efficiently. The platform allows users to **browse, book, and manage events**, while providing administrators with analytical insights via a separate data analysis microservice.
 
+
 **Architecture Overview**
 - **Main Application**: Handles user management, event management, and bookings.
 - **Data Analysis Service (Microservice)**: Analyzes event data and allows the administrator to perform analysis via a button in the interface.
